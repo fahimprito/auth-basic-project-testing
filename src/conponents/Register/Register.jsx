@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const { createUser } = useContext(AuthContext);
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -14,6 +16,14 @@ const Register = () => {
 
         console.log(name, email, password);
 
+        // create user
+        createUser(email, password)
+            .then(result => {
+                console.log(result.user);
+            })
+            .catch(error => {
+                console.log('ERROR', error.message)
+            })
     }
 
     return (
