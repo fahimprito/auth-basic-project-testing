@@ -2,12 +2,13 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { AuthContext } from "../../providers/AuthProvider";
+import { FcGoogle } from "react-icons/fc";
 
 
 const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    const { loginUser } = useContext(AuthContext);
+    const { loginUser, signInWithGoogle } = useContext(AuthContext);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -25,6 +26,15 @@ const Login = () => {
                 console.log('ERROR', error.message)
             })
 
+    }
+
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(result => {
+                console.log(result.user);
+                navigate('/');
+            })
+            .catch(error => console.log('ERROR', error.message))
     }
 
     return (
@@ -64,7 +74,15 @@ const Login = () => {
                                 <button className="btn btn-primary">Login</button>
                             </div>
                         </form>
-                        <p className="text-blue-500 text-center pt-1 pb-4">New to this website? please <Link to="/register" className="underline underline-offset-1">Register</Link></p>
+                        <div className="card-body -mt-4 py-0">
+                            <button
+                                onClick={handleGoogleSignIn}
+                                className="btn bg-blue-500 text-white font-semibold hover:bg-blue-600">
+                                <FcGoogle />
+                                Sign in with Google
+                            </button>
+                        </div>
+                        <p className="text-blue-500 text-center py-4">New to this website? please <Link to="/register" className="underline underline-offset-1">Register</Link></p>
                     </div>
                 </div>
             </div>
